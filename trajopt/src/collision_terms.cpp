@@ -1572,7 +1572,7 @@ CollisionCost::CollisionCost(tesseract_kinematics::ForwardKinematics::ConstPtr m
 
 sco::ConvexObjective::Ptr CollisionCost::convex(const sco::DblVec& x, sco::Model* model)
 {
-  sco::ConvexObjective::Ptr out(new sco::ConvexObjective(model));
+  auto out = std::make_shared<sco::ConvexObjective>(model);
   sco::AffExprVector exprs;
   AlignedVector<Eigen::Vector2d> exprs_data;
 
@@ -1685,7 +1685,7 @@ CollisionConstraint::CollisionConstraint(tesseract_kinematics::ForwardKinematics
 
 sco::ConvexConstraints::Ptr CollisionConstraint::convex(const sco::DblVec& x, sco::Model* model)
 {
-  sco::ConvexConstraints::Ptr out(new sco::ConvexConstraints(model));
+  auto out = std::make_shared<sco::ConvexConstraints>(model);
   sco::AffExprVector exprs;
   AlignedVector<Eigen::Vector2d> exprs_data;
 

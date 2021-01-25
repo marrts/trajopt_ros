@@ -54,7 +54,7 @@ ConvexObjective::Ptr CostFromFunc::convex(const DblVec& x, Model* model)
 {
   Eigen::VectorXd x_eigen = getVec(x, vars_);
 
-  ConvexObjective::Ptr out(new ConvexObjective(model));
+  auto out = std::make_shared<ConvexObjective>(model);
   if (!full_hessian_)
   {
     double val;
@@ -169,7 +169,7 @@ ConvexObjective::Ptr CostFromErrFunc::convex(const DblVec& x, Model* model)
 {
   Eigen::VectorXd x_eigen = getVec(x, vars_);
   Eigen::MatrixXd jac = (dfdx_) ? dfdx_->call(x_eigen) : calcForwardNumJac(*f_, x_eigen, epsilon_);
-  ConvexObjective::Ptr out(new ConvexObjective(model));
+  auto out = std::make_shared<ConvexObjective>(model);
   Eigen::VectorXd y = f_->call(x_eigen);
   for (int i = 0; i < jac.rows(); ++i)
   {
@@ -248,7 +248,7 @@ ConvexConstraints::Ptr ConstraintFromErrFunc::convex(const DblVec& x, Model* mod
 {
   Eigen::VectorXd x_eigen = getVec(x, vars_);
   Eigen::MatrixXd jac = (dfdx_) ? dfdx_->call(x_eigen) : calcForwardNumJac(*f_, x_eigen, epsilon_);
-  ConvexConstraints::Ptr out(new ConvexConstraints(model));
+  auto out = std::make_shared<ConvexConstraints>(model);
   Eigen::VectorXd y = f_->call(x_eigen);
   for (int i = 0; i < jac.rows(); ++i)
   {
