@@ -1410,7 +1410,7 @@ void JointAccTermInfo::hatch(TrajOptProb& prob)
     // If the tolerances are 0, an equality cnt is set. Otherwise it's an inequality constraint
     if (is_upper_zeros && is_lower_zeros)
     {
-      prob.addConstraint(sco::Constraint::Ptr(new JointAccEqConstraint(
+      prob.addConstraint(std::make_shared<JointAccEqConstraint>(
           joint_vars, util::toVectorXd(coeffs), util::toVectorXd(targets), first_step, last_step));
       prob.getConstraints().back()->setName(name);
     }
