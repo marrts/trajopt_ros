@@ -102,10 +102,10 @@ struct Var
 {
   using Ptr = std::shared_ptr<Var>;
 
-  VarRep* var_rep{ nullptr };
+  VarRep::Ptr var_rep{ nullptr };
   Var() = default;
   ~Var() = default;
-  Var(VarRep* var_rep) : var_rep(var_rep) {}
+  Var(VarRep::Ptr var_rep) : var_rep(std::move(var_rep)) {}
   Var(const Var& other) = default;
   Var& operator=(const Var&) = default;
   Var(Var&&) = default;
@@ -141,7 +141,7 @@ struct Cnt
 {
   using Ptr = std::shared_ptr<Cnt>;
 
-  CntRep* cnt_rep{ nullptr };
+  CntRep::Ptr cnt_rep{ nullptr };
   Cnt() = default;
   Cnt(const Cnt&) = default;
   Cnt& operator=(const Cnt&) = default;
@@ -149,7 +149,7 @@ struct Cnt
   Cnt& operator=(Cnt&&) = default;
   ~Cnt() = default;
 
-  Cnt(CntRep* cnt_rep) : cnt_rep(cnt_rep) {}
+  Cnt(CntRep::Ptr cnt_rep) : cnt_rep(std::move(cnt_rep)) {}
 };
 
 struct AffExpr
