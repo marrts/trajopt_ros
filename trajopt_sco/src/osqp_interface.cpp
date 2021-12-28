@@ -18,24 +18,40 @@ namespace sco
 const double OSQP_INFINITY = std::numeric_limits<double>::infinity();
 const bool SUPER_DEBUG_MODE = false;
 
-Model::Ptr createOSQPModel()
+Model::Ptr createOSQPModel(ModelConfig::Ptr model_config = nullptr)
 {
-  auto out = std::make_shared<OSQPModel>();
+  Model::Ptr out;
+  if (model_config)
+    out = std::make_shared<OSQPModel>(model_config);
+  else
+    out = std::make_shared<OSQPModel>();
   return out;
 }
 
-OSQPModel::OSQPModel() : P_(nullptr), A_(nullptr)
+OSQPModel::OSQPModel(ModelConfig::Ptr model_config) : P_(nullptr), A_(nullptr)
 {
   // Define Solver settings as default
   // see https://osqp.org/docs/interfaces/solver_settings.html#solver-settings
   osqp_set_default_settings(&osqp_settings_);
   // tuning parameters to be less accurate, but add a polishing step
-  osqp_settings_.eps_abs = 1e-4;
-  osqp_settings_.eps_rel = 1e-6;
-  osqp_settings_.max_iter = 8192;
-  osqp_settings_.polish = 1;
-  osqp_settings_.verbose = SUPER_DEBUG_MODE;
-  osqp_settings_.adaptive_rho = false;
+  if (model_config)
+  {
+    osqp_settings_.eps_abs = model_config->osqp_eps_abs;
+    osqp_settings_.eps_rel = model_config->osqp_eps_rel;
+    osqp_settings_.max_iter = model_config->osqp_max_iter;
+    osqp_settings_.polish = model_config->osqp_polish;
+    osqp_settings_.verbose = model_config->osqp_verbose;
+    osqp_settings_.adaptive_rho = model_config->osqp_adaptive_rho;
+  }
+  else
+  {
+    osqp_settings_.eps_abs = 1e-4;
+    osqp_settings_.eps_rel = 1e-6;
+    osqp_settings_.max_iter = 8192;
+    osqp_settings_.polish = 1;
+    osqp_settings_.verbose = SUPER_DEBUG_MODE;
+    osqp_settings_.adaptive_rho = false;
+  }
 }
 OSQPModel::~OSQPModel()
 {

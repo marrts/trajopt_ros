@@ -86,6 +86,19 @@ public:
   virtual VarVector getVars() const = 0;
 };
 
+struct ModelConfig
+{
+  using Ptr = std::shared_ptr<ModelConfig>;
+  using ConstPtr = std::shared_ptr<const ModelConfig>;
+
+  double osqp_eps_abs = 1e-4;
+  double osqp_eps_rel = 1e-6;
+  int osqp_max_iter = 8192;
+  int osqp_polish = 1;
+  bool osqp_verbose = false;
+  bool osqp_adaptive_rho = false;
+};
+
 struct VarRep
 {
   using Ptr = std::shared_ptr<VarRep>;
@@ -232,7 +245,7 @@ std::vector<ModelType> availableSolvers();
 
 std::ostream& operator<<(std::ostream& os, const ModelType& cs);
 
-Model::Ptr createModel(ModelType model_type = ModelType::AUTO_SOLVER);
+Model::Ptr createModel(ModelType model_type = ModelType::AUTO_SOLVER, ModelConfig::Ptr model_config = nullptr);
 
 void vars2inds(const VarVector& vars, SizeTVec& inds);
 

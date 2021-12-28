@@ -9,6 +9,7 @@ TRAJOPT_IGNORE_WARNINGS_POP
 
 namespace sco
 {
+
 /**
  * OSQPModel uses the BSD solver OSQP to solve a linearly constrained QP.
  * OSQP solves a problem in the form:
@@ -64,7 +65,7 @@ class OSQPModel : public Model
   QuadExpr objective_; /**< objective QuadExpr expression */
 
 public:
-  OSQPModel();
+  OSQPModel(ModelConfig::Ptr model_config = nullptr);
   ~OSQPModel() override;
   OSQPModel(const OSQPModel& model) = delete;
   OSQPModel& operator=(const OSQPModel& model) = delete;
